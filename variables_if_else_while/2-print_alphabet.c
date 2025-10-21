@@ -9,7 +9,7 @@ int main(void)
 {
 	char c = 97;
 
-	while (c <= 123)
+	while (c <= 122)
 	{
 		putchar(c);
 		c++;
