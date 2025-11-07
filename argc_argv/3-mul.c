@@ -27,5 +27,5 @@ int main(int argc, char *argv[])
 		c = a * b;
 		printf("%d\n", c);
 		return (0);
-	}	
+	}
 }
