@@ -14,7 +14,7 @@ list_t *add_node(list_t **head, const char *str)
 	size_t length = 0;
 
 	while (str[length])
-	{	
+	{
 		length++;
 	}
 
@@ -25,7 +25,6 @@ list_t *add_node(list_t **head, const char *str)
 	}
 
 	new_node->str = strdup(str);
-
 	if (!new_node->str)
 	{
 		free(new_node);
