@@ -105,7 +105,7 @@ int error_close(int fd_back, int fd_go)
 
 int main(int ac, char *av[])
 {
-	int fd_from, fd_to, c1, c2;
+	int fd_from, fd_to;
 	ssize_t nread;
 	char buffer[1024];
 
@@ -136,18 +136,6 @@ int main(int ac, char *av[])
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]);
 		exit(98);
-	}
-	c1 = close(fd_from);
-	if (c1 == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from);
-		exit(100);
-	}
-	c2 = close(fd_to);
-	if (c2 == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_to);
-		exit(100);
 	}
 	return (0);
 }
