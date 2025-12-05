@@ -93,10 +93,9 @@ int error_close(int fd_back, int fd_go)
 	}
 	return (err_close);
 }
-
 int main(int ac, char *av[])
 {
-	int fd_from, fd_to, err_read, err_close;
+	int fd_from, fd_to, c1, c2;
 	ssize_t nread;
 	char buffer[1024];
 
@@ -107,20 +106,24 @@ int main(int ac, char *av[])
 	}
 
 	fd_from = open(av[1], O_RDONLY);
-	fd_to = open(av[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-
-	err_read = reading_oops(fd_from, fd_to, av[2]);
-	if (err_read != 0)
-	{	
-		exit(err_read);
+	if (fd_from == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]);
+		exit(98);
 	}
 
-	while ((nread = read(fd_from, buffer, sizeof(buffer))) > 0)
+	fd_to = open(av[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	if (fd_to == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
+		exit(99);
+	}
+
+	while ((nread = read(fd_from, buffer, 1024)) > 0)
 	{
 		if (write(fd_to, buffer, nread) != nread)
 		{
 			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
-			error_close(fd_from, fd_to);
 			exit(99);
 		}
 	}
@@ -128,14 +131,21 @@ int main(int ac, char *av[])
 	if (nread == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]);
-		error_close(fd_from, fd_to);
 		exit(98);
 	}
 
-	err_close = error_close(fd_from, fd_to);
-	if (err_close != 0)
-	{	
-		exit(err_close);
+	c1 = close(fd_from);
+	if (c1 == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from);
+		exit(100);
+	}
+
+	c2 = close(fd_to);
+	if (c2 == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_to);
+		exit(100);
 	}
 
 	return (0);
