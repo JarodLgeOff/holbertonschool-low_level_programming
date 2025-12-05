@@ -109,7 +109,7 @@ int main(int ac, char *av[])
 	fd_from = open(av[1], O_RDONLY);
 	fd_to = open(av[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 
-	err_read = reading_oops(fd_from, fd_to, av[1]);
+	err_read = reading_oops(fd_from, fd_to, av[2]);
 	if (err_read != 0)
 	{	
 		exit(err_read);
